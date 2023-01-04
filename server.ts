@@ -1,5 +1,5 @@
 
-import express from 'express';
+import * as express from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as csv from 'fast-csv';
@@ -54,10 +54,14 @@ loadCompanyData().then((resolved: any) => {
 const app = express();
 const PORT: Number = 3000;
 
-app.get('/', (req, res) => {
-    res.send('Welcome to typescript backend!');
-})
+const appFolder = path.join(__dirname, 'surfco-ui/build');
+
+// app.get('/', (req, res) => {
+//     res.send('Welcome to typescript backend!');
+// })
+
 app.get('/search', (req, res) => {
+    console.log("REquest received");
     let x = req.query.name;
     let searchResults = [...companyData.values()].filter((v) => v.name.includes(x));
     searchResults = req.query.ipo ? searchResults.filter((v) => ipoData.has(v.id)) : searchResults;
@@ -65,6 +69,11 @@ app.get('/search', (req, res) => {
     searchResults = req.query.hasBeenAcquired ? searchResults.filter((v) => v.acquiredBy.length != 0) : searchResults;
     res.send(searchResults);
 })
+app.use(express.static(appFolder), (rep, res) => {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.sendFile('index.html', { root: appFolder });
+  });
 
 
 // Server setup

@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc server.ts --downlevelIteration",
     "start": " node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "exclude": [
+    "surfco-ui"
+],
   "keywords": [],
   "author": "",
   "license": "ISC",
