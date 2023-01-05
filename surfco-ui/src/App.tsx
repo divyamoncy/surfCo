@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CompanyCard from './components/CompanyCard';
 import { Company, getAllCompanies, SearchParams } from './services/CompanyService';
 import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Pagination, Stack, TextField } from '@mui/material';
+import CompanyDetails from './components/CompanyDetails';
 
 let theme = createTheme({
   palette: {
@@ -136,7 +137,7 @@ function App() {
             </Stack>
           </Box>
         </Drawer>
-        <Box component="main" sx={{ maxHeight: '100vh', overflow: 'auto', p: 3, width: 600, flexShrink: 0, bgcolor: "#f8f6f9" }}>
+        <Box component="main" sx={{ minHeight: '100vh', maxHeight: '100vh', overflow: 'auto', p: 3, width: 600, flexShrink: 0, bgcolor: "#f8f6f9" }}>
           <Toolbar />
 
           {fullList.length > 0 &&
@@ -148,32 +149,13 @@ function App() {
           }
           )}
         </Box>
-        <Box component="main" sx={{ p: 3, maxHeight: '100vh', overflow: 'auto', bgcolor: "#f8f6f9" }}>
-          <Toolbar />
-          <Stack>
-            <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', mb: 1.5}}>
-              <Box width="45px" height="45px" sx={{ p: 1, boxShadow: 2, borderRadius: 1, mr: 1.5, bgcolor: "white" }}>
-                <img src='0.png' height="30px" width="30px"></img></Box>
-              <Typography variant="h4" component="div">
-                {currentlySelectedCompany.name}
-              </Typography>
-            </Stack>
-            <Typography variant="subtitle1" component="div">
-                Overview
-              </Typography>
-              <Typography paragraph variant="body2">
-              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-              </Typography>
-              {companyList.map(company => {
-            return (
-              <CompanyCard company={company} changeCurrentlySelectedCompany={changeCurrentlySelectedCompany} activeCompanyId={currentlySelectedCompany.id} />)
-          }
-          )}
-          </Stack>
+        <Box component="main" sx={{ flexGrow: 1, 
+          // display: 'flex', alignItems: 'center', justifyContent: 'center', 
+          p: 3, maxHeight: '100vh', overflow: 'auto', bgcolor: "#f8f6f9" }}>
+                <Toolbar />
+                <CompanyDetails company={currentlySelectedCompany} />
         </Box>
+        
       </Box>
     </ThemeProvider>
   );

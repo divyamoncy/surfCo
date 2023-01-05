@@ -105,6 +105,14 @@ app.get('/search', (req, res) => {
     console.log("SearchRESults length : " + searchResults.length);
     res.send(searchResults);
 })
+
+app.get('/ipo', (req, res) => {
+    console.log("IPO request received");
+    let companyId = req.query.companyId;
+    let searchResults = ipoData.has(companyId) ? ipoData.get(companyId) : {};
+    res.send(searchResults);
+})
+
 app.use(express.static(appFolder), (rep, res) => {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Access-Control-Allow-Origin', '*');

@@ -1,9 +1,7 @@
 import PlaceIcon from '@mui/icons-material/Place';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { Company } from '../services/CompanyService';
@@ -39,26 +37,14 @@ function CompanyCard(props: { company: Company, changeCurrentlySelectedCompany: 
                 <Stack direction="row">
                     {
                         company.acquired.length !== 0 &&
-                        // <Stack direction="row" alignItems="center" gap={0.5} color="text.secondary" sx={{ mb: 1.5, mr: 0.5 }}>
-                        //     <MergeTypeIcon fontSize='small' color="primary" />
-                        //     <Typography variant="body2">has acquired {company.acquired.length} company(s) </Typography>
-                        // </Stack>
                         <Chip label={'has acquired ' + company.acquired.length + ' company(s)'} icon={<MergeTypeIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                     }
                     {
                         company.acquiredBy.length !== 0 &&
-                        // <Stack direction="row" alignItems="center" gap={0.5} color="text.secondary" sx={{ mb: 1.5, mr: 0.5 }}>
-                        //     <WorkIcon fontSize='small' color="primary" />
-                        //     <Typography variant="body2">has been acquired </Typography>
-                        // </Stack>
                         <Chip label={'has been acquired'} icon={<WorkIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                         }
                         {
                         company.ipos.length !== 0 &&
-                        // <Stack direction="row" alignItems="center" gap={0.5} color="text.secondary" sx={{ mb: 1.5 }}>
-                        //     <PaidIcon fontSize='small' color="primary" />
-                        //     <Typography variant="body2">IPO</Typography>
-                        // </Stack>
                         <Chip label={'IPO'} icon={<PaidIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                         }
                 </Stack>
@@ -68,9 +54,6 @@ function CompanyCard(props: { company: Company, changeCurrentlySelectedCompany: 
                 </Typography>
             </CardContent>
             </CardActionArea>
-            {/* <CardActions>
-                <Button size="small">Learn More</Button>
-            </CardActions> */}
         </Card>
     );
 }
