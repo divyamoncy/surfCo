@@ -10,10 +10,12 @@ import { Company } from '../services/CompanyService';
 import MergeTypeIcon from '@mui/icons-material/MergeType';
 import WorkIcon from '@mui/icons-material/Work';
 import PaidIcon from '@mui/icons-material/Paid';
-import { Chip } from '@mui/material';
+import { CardActionArea, Chip } from '@mui/material';
 
-function CompanyCard(props: { company: Company }) {
-    const company = props.company
+function CompanyCard(props: { company: Company, changeCurrentlySelectedCompany: any, activeCompanyId: string}) {
+    const company = props.company;
+    const activeCompanyId = props.activeCompanyId;
+    const maxCharsInOverview = 150;
     let locationArray = [];
     if (company.city)
         locationArray.push(company.city);
@@ -23,7 +25,8 @@ function CompanyCard(props: { company: Company }) {
         locationArray.push(company.country_code);
 
     return (
-        <Card sx={{ minWidth: 275, mb: 1.5 }}>
+        <Card sx={{ minWidth: 275, mb: 1.5 }} style={{ borderTop: activeCompanyId === company.id ? "4px solid #9431cc" : 0 }} elevation={activeCompanyId === company.id ? 4 : 1}>
+            <CardActionArea onClick={()=>props.changeCurrentlySelectedCompany(company)}>
             <CardContent>
                 <Typography variant="h5" component="div" sx={{ mb: 0.5 }}>
                     {props.company.name}
@@ -40,7 +43,7 @@ function CompanyCard(props: { company: Company }) {
                         //     <MergeTypeIcon fontSize='small' color="primary" />
                         //     <Typography variant="body2">has acquired {company.acquired.length} company(s) </Typography>
                         // </Stack>
-                        <Chip label={'has acquired ' + company.acquired.length + ' company(s)'} icon={<MergeTypeIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", mb: 1.5, mr: 1, borderRadius: 1 }} />
+                        <Chip label={'has acquired ' + company.acquired.length + ' company(s)'} icon={<MergeTypeIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                     }
                     {
                         company.acquiredBy.length !== 0 &&
@@ -48,7 +51,7 @@ function CompanyCard(props: { company: Company }) {
                         //     <WorkIcon fontSize='small' color="primary" />
                         //     <Typography variant="body2">has been acquired </Typography>
                         // </Stack>
-                        <Chip label={'has been acquired'} icon={<WorkIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", mb: 1.5, mr: 1, borderRadius: 1 }} />
+                        <Chip label={'has been acquired'} icon={<WorkIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                         }
                         {
                         company.ipos.length !== 0 &&
@@ -56,17 +59,18 @@ function CompanyCard(props: { company: Company }) {
                         //     <PaidIcon fontSize='small' color="primary" />
                         //     <Typography variant="body2">IPO</Typography>
                         // </Stack>
-                        <Chip label={'IPO'} icon={<PaidIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", mb: 1.5, mr: 1, borderRadius: 1 }} />
+                        <Chip label={'IPO'} icon={<PaidIcon fontSize='small' color="primary" />} sx={{ bgcolor: "primary.light", color: "text.secondary", mb: 1.5, mr: 1, borderRadius: 1 }} />
                         }
                 </Stack>
 
                 <Typography paragraph variant="body2">
-                    {props.company.overview}
+                    {props.company.overview.length > maxCharsInOverview ? props.company.overview.slice(0, maxCharsInOverview) + '...' : props.company.overview}
                 </Typography>
             </CardContent>
-            <CardActions>
+            </CardActionArea>
+            {/* <CardActions>
                 <Button size="small">Learn More</Button>
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 }
