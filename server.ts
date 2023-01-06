@@ -31,14 +31,14 @@ let loadIpoData = async () => {
             if (companyData.has(row['object_id'])) {
                 companyData.get(row['object_id']).ipos.push(row['ipo_id']);
                 if(companyData.get(row['object_id']).ipos.length > 1) 
-                    console.log("The anomaly " + row['object_id']);
+                    console.log("The anomaly which has 2 IPOs " + row['object_id']);
                 ipo.add(row['object_id']);
             }
             else
                 notFoundIPOS.push(row['object_id']);
         })
         .on('end', async (rowCount: number) => {
-            console.log("NotFoundIPOS " + JSON.stringify(notFoundIPOS));
+            console.log("Not Found IPOs " + JSON.stringify(notFoundIPOS));
             console.log("IPO inserted " + ipo.size);
             console.log(`Parsed IPO ${rowCount} rows`);
             let z = await loadAcquisitionData();
@@ -59,21 +59,17 @@ let loadAcquisitionData = async () => {
                 count++;
                 madeAcquisition.add(row['acquiring_object_id']);
                 companyData.get(row['acquiring_object_id']).acquired.push(row['acquisition_id']);
-                //console.log("Added2  " + JSON.stringify(companyData.get(row['acquiring_object_id'])));
             }
             if (companyData.has(row['acquired_object_id'])) {
                 count++;
                 hasBeenAcquired.add(row['acquired_object_id']);
                 companyData.get(row['acquired_object_id'])?.acquiredBy.push(row['acquisition_id']);
-                if(companyData.get(row['acquired_object_id'])?.acquiredBy.length > 1)
-                    console.log("Acquired more than once " + row['acquired_object_id']);
             }
         })
         .on('end', (rowCount: number) => {
             console.log("Acquisition inserted " + count);
             console.log("madeAcquisition count :  " + madeAcquisition.size);
             console.log("hasBeenAcquired count :  " + hasBeenAcquired.size);
-            //console.log(`Parsed ${rowCount} rows` + [...companyData.values()].map(x => JSON.stringify(x)));
             return [...companyData.entries()];
         });
 };
@@ -85,24 +81,10 @@ let convertToTimestamp = (acquiredDate: string) => {
     return convertedDate;
 };
 
-
-// loadCompanyData().then((resolved: any) => {
-//     console.log("Company success");
-//     loadIpoData().then((resolved: any) => {
-//         console.log("IPO success");
-//         loadAcquisitionData().then((resolved: any) => console.log("Acquisition success")).catch((err: any) => console.log(err));
-//     }).catch((err: any) => console.log(err));
-// }).catch((err: any) => console.log(err));
-
-
 const app = express();
 const PORT: Number = 3000;
 
 const appFolder = path.join(__dirname, 'surfco-ui/build');
-
-// app.get('/', (req, res) => {
-//     res.send('Welcome to typescript backend!');
-// })
 
 app.get('/search', (req, res) => {
     console.log("REquest received");
@@ -111,7 +93,7 @@ app.get('/search', (req, res) => {
     searchResults = req.query.ipo ? searchResults.filter((v) => ipoData.has(v.id)) : searchResults;
     searchResults = req.query.hasAcquired ? searchResults.filter((v) => v.acquired.length != 0) : searchResults;
     searchResults = req.query.hasBeenAcquired ? searchResults.filter((v) => v.acquiredBy.length != 0) : searchResults;
-    console.log("SearchRESults length : " + searchResults.length);
+    console.log("Search ReSults length : " + searchResults.length);
     res.send(searchResults);
 })
 
@@ -163,14 +145,4 @@ app.listen(PORT, () => {
         console.log('The application is listening '
             + 'on port http://localhost:' + PORT);
     }).catch((err: any) => console.log(err));
-
-    // loadCompanyData().then((resolved: any) => {
-    //     console.log("Company success");
-    //     loadIpoData().then((resolved: any) => {
-    //         console.log("IPO success");
-    //         loadAcquisitionData().then((resolved: any) => console.log("Acquisition success")).catch((err: any) => console.log(err));
-    //     }).catch((err: any) => console.log(err));
-    // }).catch((err: any) => console.log(err));
-    //let x = loadIpoData().then((resolved: any) => console.log(resolved)).catch((err: any) => console.log(err));
-
 })
