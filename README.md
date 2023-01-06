@@ -19,6 +19,8 @@ Run `npm start` to run the application and the application will be running on `h
 
 I struggled quite a lot with the Reset button since I was not able to reset the filter values in UI. I could figure it out only for the TextField using inputRef and not the Checkbox. 
 
+During loading data from CSVs, I got confused a bit with fast-csv events since I needed synchronization so that IPOs and Acquisition references are inserted into CompanyData map only after reading all the companies.
+
 ## Things I would have done differently
 
 It took me a while to get the hang of deciding how to split the components. I would have designed the components more efficiently from the root level esp. separate out the filter fields.

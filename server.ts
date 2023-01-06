@@ -82,7 +82,7 @@ let convertToTimestamp = (acquiredDate: string) => {
 };
 
 const app = express();
-const PORT: Number = 3000;
+const PORT: (Number | string) = process.env.port || 3000;
 
 const appFolder = path.join(__dirname, 'surfco-ui/build');
 
