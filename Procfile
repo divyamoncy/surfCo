@@ -1,1 +1,0 @@
-web: npm run setup && npm run build:client && node ./server.js
