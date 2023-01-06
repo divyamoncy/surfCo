@@ -18,7 +18,7 @@ function AcquisitionCard(props: { acquisition: Acquisition, isAcquirer: boolean 
 
     return (
         <Box sx={{ border: "1px solid", borderColor: grey[100], bgcolor: grey[50], p: 2, width: '100%', borderRadius: 1 }} >
-            <Stack direction="row" gap={1.5} sx={{ display: "flex", mb: 0.5 }} onClick={() => { console.log("Insisde"); setExpanded((expanded) => !expanded); }} >
+            <Stack direction="row" gap={1.5} sx={{ display: "flex", mb: expanded ? 1 : 0 }} onClick={() => { console.log("Insisde"); setExpanded((expanded) => !expanded); }} >
                 {acquisition.acquiredCompany != "" &&
                     <Typography variant="subtitle2" component="div" sx={{ color: grey[700], fontWeight: "bold" }} >
                         {!isAcquirer && acquisition.acquiredCompany} {isAcquirer && acquisition.acquirerCompany}
