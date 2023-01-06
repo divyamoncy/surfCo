@@ -140,7 +140,7 @@ app.use(express.static(appFolder), (rep, res) => {
 
 
 // Server setup
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
     loadCompanyData().then((resolved: any) => {
         console.log('The application is listening '
             + 'on port http://localhost:' + PORT);
