@@ -177,7 +177,7 @@ var convertToTimestamp = function (acquiredDate) {
     return convertedDate;
 };
 var app = express();
-var PORT = process.env.port || 3000;
+var PORT = process.env.PORT || 3000;
 var appFolder = path.join(__dirname, 'surfco-ui/build');
 app.get('/search', function (req, res) {
     console.log("REquest received");
