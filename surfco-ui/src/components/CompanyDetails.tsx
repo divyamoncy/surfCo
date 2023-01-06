@@ -72,11 +72,11 @@ function CompanyDetails(props: { company: Company }) {
     else
         return (
             <Stack>
-                <Stack direction="row" sx={{ display: 'flex', width: '100%', mb: 1.5 }}>
+                <Stack direction="row" sx={{ display: 'flex', alignItems: "center", width: '100%', mb: 1.5 }}>
                     <Box width="45px" height="45px" sx={{ p: 1, boxShadow: 2, borderRadius: 1, mr: 1.5, bgcolor: "white" }}>
-                        <img src='0.png' height="30px" width="30px"></img>
+                        <img src={parseInt(company.entity_id)%6+'.png'} height="30px" width="30px"></img>
                     </Box>
-                    <Typography variant="h4" component="div" sx={{ color: grey[900] }}>
+                    <Typography variant="h5" component="div" sx={{ color: grey[800] }}>
                         {company.name}
                     </Typography>
                 </Stack>
