@@ -43,7 +43,8 @@ export interface Acquisition {
     acquired_at: string,
     source_url: string,
     source_description: string,
-    acquiredCompany: string,
+    acquiredCompany?: string,
+    acquirerCompany?: string,
     timestamp: number
 }
 
@@ -72,6 +73,16 @@ export async function getIpoByCompanyId(companyId: string) {
 export async function getAllAcquisitionsByCompanyId(companyId: string) { 
     try {
         const response = await fetch('/acquisitions?companyId='+companyId);
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+
+}
+
+export async function getAllAcquiredByByCompanyId(companyId: string) { 
+    try {
+        const response = await fetch('/acquirer?companyId='+companyId);
         return await response.json();
     } catch (error) {
         return [];

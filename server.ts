@@ -65,6 +65,8 @@ let loadAcquisitionData = async () => {
                 count++;
                 hasBeenAcquired.add(row['acquired_object_id']);
                 companyData.get(row['acquired_object_id'])?.acquiredBy.push(row['acquisition_id']);
+                if(companyData.get(row['acquired_object_id'])?.acquiredBy.length > 1)
+                    console.log("Acquired more than once " + row['acquired_object_id']);
             }
         })
         .on('end', (rowCount: number) => {
@@ -126,7 +128,21 @@ app.get('/acquisitions', (req, res) => {
     let acquisitions: any[] = [];
     companyData.get(companyId).acquired.forEach((acquisitionId: string)=>{
         let acquisition = acquisitionData.get(acquisitionId);
-        acquisitions.push({...acquisition, 'acquiredCompany': companyData.get(acquisition.acquired_object_id).name, 'timestamp': convertToTimestamp(acquisition.acquired_at)});
+        acquisitions.push({...acquisition, 'acquiredCompany': companyData.has(acquisition.acquired_object_id) ? companyData.get(acquisition.acquired_object_id).name : "", 'timestamp': convertToTimestamp(acquisition.acquired_at)});
+    });
+    acquisitions.sort((a, b) => {
+        return b.timestamp - a.timestamp;
+    });
+    res.send(acquisitions);
+})
+
+app.get('/acquirer', (req, res) => {
+    console.log("Acquirer request received");
+    let companyId = req.query.companyId;
+    let acquisitions: any[] = [];
+    companyData.get(companyId).acquiredBy.forEach((acquisitionId: string)=>{
+        let acquisition = acquisitionData.get(acquisitionId);
+        acquisitions.push({...acquisition, 'acquirerCompany': companyData.has(acquisition.acquiring_object_id) ? companyData.get(acquisition.acquiring_object_id).name : "", 'timestamp': convertToTimestamp(acquisition.acquired_at)});
     });
     acquisitions.sort((a, b) => {
         return b.timestamp - a.timestamp;

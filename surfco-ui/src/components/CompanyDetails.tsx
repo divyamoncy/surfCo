@@ -1,11 +1,12 @@
 import { Box, Stack, Typography, Link } from "@mui/material";
-import { Company, getAllAcquisitionsByCompanyId, getIpoByCompanyId, IPO } from "../services/CompanyService";
+import { Company, getAllAcquiredByByCompanyId, getAllAcquisitionsByCompanyId, getIpoByCompanyId, IPO } from "../services/CompanyService";
 import { grey } from '@mui/material/colors';
 import PlaceIcon from '@mui/icons-material/Place';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useEffect, useState } from "react";
 import IpoDetails from "./IpoDetails";
 import AcquisitionDetails from "./AcquisitionDetails";
+import AcquiredByDetails from "./AcquiredByDetails";
 
 function CompanyDetails(props: { company: Company }) {
     const company = props.company;
@@ -24,6 +25,7 @@ function CompanyDetails(props: { company: Company }) {
     };
     const [ipoData, setIpoData] = useState<IPO>(initialIpo);
     const [acquisitions, setAcquisitions] = useState([]);
+    const [acquiredBy, setAcquiredBy] = useState([]);
     useEffect(()=> {
         if(company.ipos.length != 0) {
             getIpoByCompanyId(company.id).then(ipo => {
@@ -41,6 +43,15 @@ function CompanyDetails(props: { company: Company }) {
         }
         else 
             setAcquisitions([]);
+
+        if(company.acquiredBy.length != 0) {
+            getAllAcquiredByByCompanyId(company.id).then(acquisitions => {
+                setAcquiredBy(acquisitions);
+                console.log("No of acquirers " + acquisitions.length);
+            })
+        }
+        else 
+            setAcquiredBy([]);
     }, [company]);
     let locationArray = [];
     if (company.city)
@@ -92,6 +103,8 @@ function CompanyDetails(props: { company: Company }) {
                     <IpoDetails ipoData={ipoData} />}
                     {   company.acquired.length != 0 &&
                     <AcquisitionDetails acquisitions={acquisitions} />}
+                    {   company.acquiredBy.length != 0 &&
+                    <AcquiredByDetails acquisitions={acquiredBy} />}
                 </Box>
                 
             </Stack>

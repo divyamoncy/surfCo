@@ -4,7 +4,7 @@ import { Acquisition } from "../services/CompanyService";
 import AcquisitionCard from "./AcquisitionCard";
 import { useState, useEffect } from "react";
 
-function AcquisitionDetails(props: { acquisitions: Acquisition[] }) {
+function AcquiredByDetails(props: { acquisitions: Acquisition[] }) {
     const acquisitions = props.acquisitions;
     const [expanded, setExpanded] = useState<Boolean>(false);
     useEffect(() => {
@@ -14,14 +14,14 @@ function AcquisitionDetails(props: { acquisitions: Acquisition[] }) {
     return (
         <Box sx={{ border: "1px solid", borderColor: "#e1bee7", bgcolor: "primary.light", p: 2, mt: 2, width: '100%', borderRadius: 1 }}>
             <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', color: grey[800], mb: 1 }}>
-                Acquisitions <span style={{ color: "#9431cc", fontWeight: 'bold' }}>{acquisitions.length}</span>
+                Acquired By <span style={{ color: "#9431cc", fontWeight: 'bold' }}>{acquisitions.length}</span>
             </Typography>
             {acquisitions.map(acquisition => {
                 return (
-                    <AcquisitionCard acquisition={acquisition} isAcquirer={false} />
+                    <AcquisitionCard acquisition={acquisition} isAcquirer={true} />
                 )
             })}
         </Box>
     );
 }
-export default AcquisitionDetails;
+export default AcquiredByDetails;

@@ -8,19 +8,20 @@ import EventIcon from '@mui/icons-material/Event';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-function AcquisitionCard(props: { acquisition: Acquisition }) {
+function AcquisitionCard(props: { acquisition: Acquisition, isAcquirer: boolean }) {
     const acquisition = props.acquisition;
+    const isAcquirer = props.isAcquirer;
     const [expanded, setExpanded] = useState<Boolean>(false);
     useEffect(() => {
         setExpanded(false);
-    }, [acquisition]);
+    }, [acquisition, isAcquirer]);
 
     return (
         <Box sx={{ border: "1px solid", borderColor: grey[100], bgcolor: grey[50], p: 2, width: '100%', borderRadius: 1 }} >
             <Stack direction="row" gap={1.5} sx={{ display: "flex", mb: 0.5 }} onClick={() => { console.log("Insisde"); setExpanded((expanded) => !expanded); }} >
                 {acquisition.acquiredCompany != "" &&
                     <Typography variant="subtitle2" component="div" sx={{ color: grey[700], fontWeight: "bold" }} >
-                        {acquisition.acquiredCompany}
+                        {!isAcquirer && acquisition.acquiredCompany} {isAcquirer && acquisition.acquirerCompany}
                     </Typography>
                 }
                 {acquisition.acquired_at != "" &&
