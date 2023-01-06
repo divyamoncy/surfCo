@@ -82,7 +82,7 @@ let convertToTimestamp = (acquiredDate: string) => {
 };
 
 const app = express();
-const PORT: (Number | string) = process.env.PORT || 3000;
+const PORT: number = 3000;
 
 const appFolder = path.join(__dirname, 'surfco-ui/build');
 
@@ -140,7 +140,7 @@ app.use(express.static(appFolder), (rep, res) => {
 
 
 // Server setup
-app.listen(PORT,'0.0.0.0', () => {
+app.listen(PORT, () => {
     loadCompanyData().then((resolved: any) => {
         console.log('The application is listening '
             + 'on port http://localhost:' + PORT);
