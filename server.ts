@@ -31,7 +31,7 @@ let loadIpoData = async () => {
             if (companyData.has(row['object_id'])) {
                 companyData.get(row['object_id']).ipos.push(row['ipo_id']);
                 if(companyData.get(row['object_id']).ipos.length > 1) 
-                console.log("The anomaly " + row['object_id']);
+                    console.log("The anomaly " + row['object_id']);
                 ipo.add(row['object_id']);
             }
             else
@@ -76,6 +76,13 @@ let loadAcquisitionData = async () => {
         });
 };
 
+let convertToTimestamp = (acquiredDate: string) => {
+    let [month, day, year] = acquiredDate.split('/').map((x) => parseInt(x));
+    year = (59 < year && year <= 99) ? year + 1900 : year + 2000;
+    let convertedDate = new Date(year, month - 1, day).getTime();
+    return convertedDate;
+};
+
 
 // loadCompanyData().then((resolved: any) => {
 //     console.log("Company success");
@@ -113,6 +120,20 @@ app.get('/ipo', (req, res) => {
     res.send(searchResults);
 })
 
+app.get('/acquisitions', (req, res) => {
+    console.log("Acquisition request received");
+    let companyId = req.query.companyId;
+    let acquisitions: any[] = [];
+    companyData.get(companyId).acquired.forEach((acquisitionId: string)=>{
+        let acquisition = acquisitionData.get(acquisitionId);
+        acquisitions.push({...acquisition, 'acquiredCompany': companyData.get(acquisition.acquired_object_id).name, 'timestamp': convertToTimestamp(acquisition.acquired_at)});
+    });
+    acquisitions.sort((a, b) => {
+        return b.timestamp - a.timestamp;
+    });
+    res.send(acquisitions);
+})
+
 app.use(express.static(appFolder), (rep, res) => {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Access-Control-Allow-Origin', '*');
@@ -124,7 +145,6 @@ app.use(express.static(appFolder), (rep, res) => {
 app.listen(PORT, () => {
     loadCompanyData().then((resolved: any) => {
         console.log('The application is listening '
-
             + 'on port http://localhost:' + PORT);
     }).catch((err: any) => console.log(err));
 

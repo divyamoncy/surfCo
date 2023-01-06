@@ -153,7 +153,9 @@ function App() {
           // display: 'flex', alignItems: 'center', justifyContent: 'center', 
           p: 3, maxHeight: '100vh', overflow: 'auto', bgcolor: "#f8f6f9" }}>
                 <Toolbar />
+                { companyList.length != 0 &&
                 <CompanyDetails company={currentlySelectedCompany} />
+                }
         </Box>
         
       </Box>

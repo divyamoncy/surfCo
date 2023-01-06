@@ -23,7 +23,7 @@ function CompanyCard(props: { company: Company, changeCurrentlySelectedCompany: 
         locationArray.push(company.country_code);
 
     return (
-        <Card sx={{ minWidth: 275, mb: 1.5 }} style={{ borderTop: activeCompanyId === company.id ? "4px solid #9431cc" : 0 }} elevation={activeCompanyId === company.id ? 4 : 1}>
+        <Card sx={{ minWidth: 275, mb: 1.5 }} style={{ border: activeCompanyId === company.id ? "2px solid #9431cc" : 0 }} elevation={activeCompanyId === company.id ? 4 : 1}>
             <CardActionArea onClick={()=>props.changeCurrentlySelectedCompany(company)}>
             <CardContent>
                 <Typography variant="h5" component="div" sx={{ mb: 0.5 }}>

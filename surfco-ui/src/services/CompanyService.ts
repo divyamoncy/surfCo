@@ -23,14 +23,28 @@ export interface IPO {
     id: string,
     ipo_id: string,
     object_id: string,
-    valuation_amount: Number,
+    valuation_amount: number,
     valuation_currency_code: string,
-    raised_amount: Number,
+    raised_amount: number,
     raised_currency_code: string,
     public_at: string,
     stock_symbol: string,
     source_url: string,
     source_description: string
+}
+
+export interface Acquisition {
+    id: string,
+    acquisition_id: string,
+    acquiring_object_id: string,
+    acquired_object_id: string,
+    price_amount: number,
+    price_currency_code: string,
+    acquired_at: string,
+    source_url: string,
+    source_description: string,
+    acquiredCompany: string,
+    timestamp: number
 }
 
 export async function getAllCompanies(filterParams: SearchParams) {
@@ -48,6 +62,16 @@ export async function getAllCompanies(filterParams: SearchParams) {
 export async function getIpoByCompanyId(companyId: string) { 
     try {
         const response = await fetch('/ipo?companyId='+companyId);
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+
+}
+
+export async function getAllAcquisitionsByCompanyId(companyId: string) { 
+    try {
+        const response = await fetch('/acquisitions?companyId='+companyId);
         return await response.json();
     } catch (error) {
         return [];

@@ -1,10 +1,11 @@
-import { Box, Toolbar, Stack, Typography, Link } from "@mui/material";
-import { Company, getIpoByCompanyId, IPO } from "../services/CompanyService";
+import { Box, Stack, Typography, Link } from "@mui/material";
+import { Company, getAllAcquisitionsByCompanyId, getIpoByCompanyId, IPO } from "../services/CompanyService";
 import { grey } from '@mui/material/colors';
 import PlaceIcon from '@mui/icons-material/Place';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useEffect, useState } from "react";
 import IpoDetails from "./IpoDetails";
+import AcquisitionDetails from "./AcquisitionDetails";
 
 function CompanyDetails(props: { company: Company }) {
     const company = props.company;
@@ -22,15 +23,24 @@ function CompanyDetails(props: { company: Company }) {
         source_description: ""
     };
     const [ipoData, setIpoData] = useState<IPO>(initialIpo);
+    const [acquisitions, setAcquisitions] = useState([]);
     useEffect(()=> {
         if(company.ipos.length != 0) {
             getIpoByCompanyId(company.id).then(ipo => {
             setIpoData(ipo);
             console.log("IPO " + JSON.stringify(ipo));
-            console.log("IPODATA " + JSON.stringify(ipoData));
           });}
-          else
+        else
           setIpoData(initialIpo);
+
+        if(company.acquired.length != 0) {
+            getAllAcquisitionsByCompanyId(company.id).then(acquisitions => {
+                setAcquisitions(acquisitions);
+                console.log("No of acquisitions " + acquisitions.length);
+            })
+        }
+        else 
+            setAcquisitions([]);
     }, [company]);
     let locationArray = [];
     if (company.city)
@@ -43,8 +53,8 @@ function CompanyDetails(props: { company: Company }) {
         return (
             <Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 5 }}>
                 <img src='full-moon.png' height="250px" width="250px"></img>
-                <Typography variant="h6" component="div" color="text.secondary" sx={{ mt: 2, fontWeight: 'bold', color: grey[400] }}>
-                    Select a company
+                <Typography variant="h6" component="div" color="text.secondary" sx={{ mt: 2, color: grey[400] }}>
+                    Click on a company to view details
                 </Typography>
             </Stack>
         );
@@ -67,19 +77,23 @@ function CompanyDetails(props: { company: Company }) {
                 {company.homepage_url != "" &&
                     <Stack direction="row" gap={0.5} sx={{ mb: 1 }}>
                         <Link href={company.homepage_url} underline="always" target="_blank" rel="noreferrer" sx={{ color: "primary" }} >
-                            {company.homepage_url.length < 40 ? company.homepage_url : company.homepage_url.slice(0, 40) + '...'}
+                            {company.homepage_url.length < 40 ? company.homepage_url : company.homepage_url.slice(0, 40) + '...'} 
                         </Link>
                         <OpenInNewIcon color="primary" fontSize="small"/>
                     </Stack>}
-                <Box sx={{ border: "1px solid", borderColor: grey[200], bgcolor: "white", px: 2.5, py: 1.5, width: '100%', borderRadius: 1 }}>
+                <Box sx={{ border: "1px solid", borderColor: grey[200], bgcolor: "white", px: 3.5, py: 2.5, width: '100%', borderRadius: 1 }}>
                     <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', color: grey[800] }}>
                         Overview
                     </Typography>
                     <Typography paragraph variant="body2" sx={{ color: grey[800], textAlign: 'justify', textJustify: 'inter-character' }}>
                         {company.overview != "" ? company.overview : 'No overview available for the selected company.'}
                     </Typography>
+                    {   company.ipos.length != 0 &&
+                    <IpoDetails ipoData={ipoData} />}
+                    {   company.acquired.length != 0 &&
+                    <AcquisitionDetails acquisitions={acquisitions} />}
                 </Box>
-                <IpoDetails ipoData={ipoData} />
+                
             </Stack>
         );
 }
